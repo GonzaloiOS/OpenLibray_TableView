@@ -34,6 +34,9 @@ class DetailViewController: UIViewController,UITextFieldDelegate,SystemClassDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.titleBookTextView.text = ""
+        self.authorTextView.text = ""
+        
         if((self.onlyShowBookInfo) != nil){
             
             self.searchTextField.hidden = true;
@@ -48,7 +51,7 @@ class DetailViewController: UIViewController,UITextFieldDelegate,SystemClassDele
             self.communication.delegate = self
             
         }
-        
+
         self.activityIndicator.hidesWhenStopped = true
         self.activityIndicator.stopAnimating()
         // Do any additional setup after loading the view.
@@ -83,7 +86,8 @@ class DetailViewController: UIViewController,UITextFieldDelegate,SystemClassDele
     
     func searchBookError(errorString: String) {
         
-        let actionSheetController: UIAlertController = UIAlertController(title: "Error", message: errorString, preferredStyle: .ActionSheet)
+        self.activityIndicator.stopAnimating()
+        let actionSheetController: UIAlertController = UIAlertController(title: "Error", message: errorString, preferredStyle: .Alert)
         
         //Create and add the Cancel action
         let cancelAction: UIAlertAction = UIAlertAction(title: "OK", style: .Cancel) { action -> Void in
