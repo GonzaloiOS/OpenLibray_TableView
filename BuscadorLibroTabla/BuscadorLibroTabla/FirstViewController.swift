@@ -13,6 +13,7 @@ class FirstViewController: UIViewController, UITableViewDelegate,UITableViewData
     @IBOutlet weak var tableView: UITableView!
     
     var dataToShow:[Book] = []
+    var dataToShowDictionary:[String:Book] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +66,21 @@ class FirstViewController: UIViewController, UITableViewDelegate,UITableViewData
     }
     
     func bookSearchedAndAddedToArray(book: Book) {
-        self.dataToShow.append(book)
+        
+        if((self.dataToShowDictionary[book.identifierSBNF]) != nil){
+            
+            
+            
+        }else{
+            
+            self.dataToShowDictionary[book.identifierSBNF] = book
+            
+        }
+        
+        self.dataToShow = Array(self.dataToShowDictionary.values)
+        
+        //self.dataToShow.append(book)
+        
     }
     
     override func viewWillAppear(animated: Bool) {

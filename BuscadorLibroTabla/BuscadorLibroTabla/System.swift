@@ -83,7 +83,7 @@ class SystemClass{
                             
                         }
                         
-                        let book:Book = Book.init(title: titleBook, author: authorName, imageURL: coverURL)
+                        let book:Book = Book.init(title: titleBook, author: authorName, imageURL: coverURL, identifierSBNF: isbnCode)
                         
                         if book.imageURL != nil {
                             

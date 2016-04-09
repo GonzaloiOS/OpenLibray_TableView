@@ -14,12 +14,13 @@ class Book{
     var author:String?
     var imageURL:String?
     var image:UIImage?
+    var identifierSBNF:String //be careful
     
-    init(title:String, author:String, imageURL:String?){
+    init(title:String, author:String, imageURL:String?, identifierSBNF:String){
         
         self.title = title
         self.author = author
         self.imageURL = imageURL
+        self.identifierSBNF = identifierSBNF
     }
-
 }
