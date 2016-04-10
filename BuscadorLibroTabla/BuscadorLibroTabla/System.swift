@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 protocol SystemClassDelegate{
     
@@ -19,6 +20,7 @@ protocol SystemClassDelegate{
 class SystemClass{
     
     var delegate:SystemClassDelegate?
+    var context:NSManagedObjectContext? = nil
     
     func getDataFromText(isbnCode:String){
         
@@ -91,10 +93,15 @@ class SystemClass{
                         
                         }else{
                             book.image = UIImage(named:"noCover")
+                            
+                            //core data
+                            self.saveBookInCoreData(book)
+                            
                             //delegate
                             dispatch_async(dispatch_get_main_queue(),{
                                 //show result
                                 self.delegate?.bookFetched(book)
+                                
                             })
                         }
                     }catch _{
@@ -132,6 +139,8 @@ class SystemClass{
                 book.image = UIImage(data: data!)
             }
             
+            self.saveBookInCoreData(book)
+            
             dispatch_async(dispatch_get_main_queue(),{
                 //show result
                 self.delegate?.bookFetched(book)
@@ -139,6 +148,33 @@ class SystemClass{
         }
         
         task.resume()
+        
+    }
+    
+    func saveBookInCoreData(book:Book){
+        
+        if(self.context != nil){
+            
+        }else{
+            
+            self.context = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        }
+        
+        let newBokkInCD = NSEntityDescription.insertNewObjectForEntityForName("Libro", inManagedObjectContext: self.context!)
+        
+        newBokkInCD.setValue(book.identifierSBNF, forKey: "identifier")
+        newBokkInCD.setValue(book.title!, forKey: "title")
+        newBokkInCD.setValue(book.author!, forKey: "author")
+        newBokkInCD.setValue(UIImagePNGRepresentation(book.image!), forKey: "coverImage")
+        
+        do{
+            try self.context?.save()
+        
+        }catch{
+            
+            print("Error")
+        }
+        
         
     }
     

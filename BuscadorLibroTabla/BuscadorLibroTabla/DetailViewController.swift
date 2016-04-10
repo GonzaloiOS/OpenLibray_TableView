@@ -27,6 +27,8 @@ class DetailViewController: UIViewController,UITextFieldDelegate,SystemClassDele
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    var currentDictionary:[String:Book] = [:]
+    
     var delegate:DetailProtocolDelegate?
     
     var onlyShowBookInfo:Book?
@@ -65,10 +67,23 @@ class DetailViewController: UIViewController,UITextFieldDelegate,SystemClassDele
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
-        print(textField.text!)
-        communication.getDataFromText(textField.text!)
+        let temporalDictionary = self.currentDictionary[textField.text!]
+        
+        print(self.currentDictionary)
+        
+        if ((temporalDictionary) != nil) {
+            
+            self.bookFetched(self.currentDictionary[textField.text!]!)
+            
+        }else{
+            
+            print(textField.text!)
+            communication.getDataFromText(textField.text!)
+            self.activityIndicator.startAnimating()
+            
+        }
+        
         self.searchTextField.resignFirstResponder()
-        self.activityIndicator.startAnimating()
         
         return true
     }
@@ -80,7 +95,7 @@ class DetailViewController: UIViewController,UITextFieldDelegate,SystemClassDele
         self.coverBookImageVIew.image = book.image!
         
         self.delegate?.bookSearchedAndAddedToArray(book)
-        
+        self.currentDictionary[book.identifierSBNF] = book
         self.activityIndicator.stopAnimating()
     }
     
